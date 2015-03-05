@@ -18,7 +18,7 @@ object StreamDriver {
     val tf = new TwitterFactory(cb.build())
     val twitterApi = tf.getInstance()
 
-    val ssc = new StreamingContext(new SparkConf().setMaster("local[2]").setAppName("TW Spark").set("spark.cassandra.connection.host", "localhost"), Seconds(1))
+    val ssc = new StreamingContext(new SparkConf().setMaster("local[2]").setAppName("TW Spark").set("spark.cassandra.connection.host", "localhost"), Seconds(5))
     ssc.checkpoint("tmp/")
 
     // Global information is available by using 1 as the WOEID.
