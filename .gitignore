@@ -18,3 +18,4 @@ project/plugins/project/
 
 tmp
 .idea
+src/main/resources/twitter4j.properties
