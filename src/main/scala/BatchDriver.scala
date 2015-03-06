@@ -15,8 +15,8 @@ object BatchDriver {
 
   // most active user
   val usercount = twdata.map(d => (d.getLong("user_id"), 1)).reduceByKey(_+_)
-
   // TT most mentioned
-  val trendsount = twdata.flatMap(d => d.getSet[String]("trends").map(x =>  (x,1) ))
+  val trendsount = twdata.flatMap(d => d.getSet[String]("trends").map(x =>  (x,1) )).reduceByKey(_+_)
+
 
 }

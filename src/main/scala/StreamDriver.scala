@@ -1,3 +1,4 @@
+import util._
 import com.datastax.spark.connector._
 import org.apache.spark._
 import org.apache.spark.streaming._
@@ -42,10 +43,18 @@ object StreamDriver {
 
     val rowtrends = urlTweets.flatMap(
       tweet => tweet.getURLEntities.map(
-        urlent => (urlent.getExpandedURL, tweet.getId, tweet.getUser.getId, tweet.getCreatedAt, tweet.getText, trends.filter(tt => tweet.getText.contains(tt)).toSet)
+        urlent => (
+          urlent.getExpandedURL,
+          tweet.getId,
+          tweet.getUser.getId,
+          tweet.getCreatedAt,
+          tweet.getText,
+          trends.filter(tt => tweet.getText.contains(tt)).toSet,
+          UrlUtil.getRealUrl(urlent.getExpandedURL)
+          )
       ))
 
-    rowtrends.saveToCassandra("twspark", "trendurls", SomeColumns("url", "tweet", "user_id", "produced", "status", "trends"))
+    rowtrends.saveToCassandra("twspark", "trendurls", SomeColumns("url", "tweet", "user_id", "produced", "status", "trends", "real_url"))
 
     ssc.start()
     ssc.awaitTermination()
